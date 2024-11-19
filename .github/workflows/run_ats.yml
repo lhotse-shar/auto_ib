@@ -1,0 +1,50 @@
+name: Run Bash Script for Python code
+
+on:
+  schedule:
+    - cron: '05 18 * * 1-5' # UTC, 03:05 KST
+  workflow_dispatch: # 수동 트리거 옵션 추가
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.9.20'  # 필요한 파이썬 버전
+
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+
+    - name: Make run.sh executable
+      run: chmod +x run_ats.sh
+
+    - name: Run the shell script with parameters
+      run: ./run_ats.sh PROD 68112231
+      env:
+        SLACK_WEBHOOK_URL_PROD: ${{ secrets.SLACK_WEBHOOK_URL_PROD }}
+        PROD_KIS_68112231_APP_KEY: ${{ secrets.PROD_KIS_68112231_APP_KEY }}
+        PROD_KIS_68112231_APP_SECRET: ${{ secrets.PROD_KIS_68112231_APP_SECRET }}
+
+    - name: Run the shell script with parameters
+      run: ./run_ats.sh PROD 64552937
+      env:
+        SLACK_WEBHOOK_URL_PROD: ${{ secrets.SLACK_WEBHOOK_URL_PROD }}
+        PROD_KIS_64552937_APP_KEY: ${{ secrets.PROD_KIS_64552937_APP_KEY }}
+        PROD_KIS_64552937_APP_SECRET: ${{ secrets.PROD_KIS_64552937_APP_SECRET }}
+
+    - name: Commit and push changes
+      if: steps.changed-files.outputs.files_changed == 'true'
+      run: |
+         git config user.name "GitHub Actions"
+         git config user.email "actions@github.com"
+         git add .
+         git commit -m "Update articles.json"
+         git push https://${{ secrets.GH_TOKEN }}@github.com/great-shiny/action_ib.git
+     
