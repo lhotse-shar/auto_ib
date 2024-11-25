@@ -12,6 +12,7 @@ def send_msg_on_success(env, webhook_url, info):
 
     # 매수/매도 텍스트 설정
     action_text = ":red_circle: 매수" if info['is_buy'] else ":large_blue_circle: 매도"
+    is_buy_text = "매수" if info['is_buy'] else "매도"
 
     today = (datetime.now() + timedelta(hours=9)).strftime("%Y-%m-%d(%a.) %H:%M:%S")
 
@@ -62,7 +63,7 @@ def send_msg_on_success(env, webhook_url, info):
                 "fields": [
                     {
                         "type": "mrkdwn",
-                        "text": f"*매수 방법:* {info['order_type']}"
+                        "text": f"*{is_buy_text} 방법:* {info['order_type']}"
                     },
                     {
                         "type": "mrkdwn",
