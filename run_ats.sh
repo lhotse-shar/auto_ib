@@ -13,6 +13,12 @@ fi
 
 # account 값에 따라 APP_KEY를 설정합니다.
 case "$account" in
+  "68112231")
+    DEPOSIT=34111
+    PARTITIONS=30
+    THRESHOLD=15
+    TICKER="NAIL"
+    ;;
   "64552937")
     DEPOSIT=23087
     PARTITIONS=40
