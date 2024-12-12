@@ -26,6 +26,13 @@ jobs:
       run: chmod +x run_ats.sh
 
     - name: Run the shell script with parameters
+      run: ./run_ats.sh PROD 68112231
+      env:
+        SLACK_WEBHOOK_URL_PROD: ${{ secrets.SLACK_WEBHOOK_URL_PROD }}
+        PROD_KIS_68112231_APP_KEY: ${{ secrets.PROD_KIS_68112231_APP_KEY }}
+        PROD_KIS_68112231_APP_SECRET: ${{ secrets.PROD_KIS_68112231_APP_SECRET }}
+
+    - name: Run the shell script with parameters
       run: ./run_ats.sh PROD 64552937
       env:
         SLACK_WEBHOOK_URL_PROD: ${{ secrets.SLACK_WEBHOOK_URL_PROD }}
