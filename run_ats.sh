@@ -19,7 +19,7 @@ case "$account" in
     THRESHOLD=15
     TICKER="NAIL"
     ;;
-  "64552937")
+  "64552937")  # TO-DO: 해당 계좌 사용 안 할 예정이라 구조 바꿔야 함
     DEPOSIT=23087
     PARTITIONS=40
     THRESHOLD=15

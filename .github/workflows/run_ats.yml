@@ -33,11 +33,11 @@ jobs:
         PROD_KIS_68112231_APP_SECRET: ${{ secrets.PROD_KIS_68112231_APP_SECRET }}
 
     - name: Run the shell script with parameters
-      run: ./run_ats.sh PROD 64552937
+      run: ./run_ats.sh PROD 64552937  # 실제 68112231 계좌로 거래가되고, 빨리 대응하고자 일단 이렇게 함
       env:
         SLACK_WEBHOOK_URL_PROD: ${{ secrets.SLACK_WEBHOOK_URL_PROD }}
-        PROD_KIS_64552937_APP_KEY: ${{ secrets.PROD_KIS_64552937_APP_KEY }}
-        PROD_KIS_64552937_APP_SECRET: ${{ secrets.PROD_KIS_64552937_APP_SECRET }}
+        PROD_KIS_68112231_APP_KEY: ${{ secrets.PROD_KIS_68112231_APP_KEY }}
+        PROD_KIS_68112231_APP_SECRET: ${{ secrets.PROD_KIS_68112231_APP_SECRET }}
 
     - name: Commit and push changes
       if: steps.changed-files.outputs.files_changed == 'true'
