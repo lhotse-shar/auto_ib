@@ -20,6 +20,7 @@ case "$account" in
     TICKER="NAIL"
     ;;
   "64552937")  # TO-DO: 해당 계좌 사용 안 할 예정이라 구조 바꿔야 함
+    account="68112231"
     DEPOSIT=23087
     PARTITIONS=40
     THRESHOLD=15
