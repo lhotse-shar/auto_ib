@@ -15,8 +15,8 @@ fi
 case "$account" in
   "68112231")
     DEPOSIT=34111
-    PARTITIONS=30
-    THRESHOLD=15
+    PARTITIONS=40
+    THRESHOLD=12
     TICKER="NAIL"
     ;;
   "64552937")  # TO-DO: 해당 계좌 사용 안 할 예정이라 구조 바꿔야 함
@@ -24,7 +24,7 @@ case "$account" in
     account="68112231"
     DEPOSIT=23087
     PARTITIONS=40
-    THRESHOLD=15
+    THRESHOLD=12
     TICKER="SOXL"
     ;;
   *)
