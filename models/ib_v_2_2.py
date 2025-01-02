@@ -74,7 +74,7 @@ def get_avg_buy_cnt(average_purchase_price, loc_buy_price, top_buy_price, progre
 
 
 # 매일 계산되는 값
-def calc_daily_value(api_values, invest_value):
+def calc_daily_value(api_values, invest_value, ticker):
     sell_threshold_percentage = invest_value['SELL_THRESHOLD_PERCENTAGE']
     num_buy_partitions = invest_value['NUM_BUY_PARTITIONS']
     purchase_amount = invest_value['PURCHASE_AMOUNT']
@@ -88,8 +88,15 @@ def calc_daily_value(api_values, invest_value):
         config.Currency.USD.value,
     )
 
-    current_purchase_amount = round(float(present_balance['output1'][0]['frcr_pchs_amt']), 2)  # 현재매입금액
-    average_purchase_price = round(float(present_balance['output1'][0]['avg_unpr3']), 2)  # 평단가
+    if ticker == 'SOXL':
+        idx = 1
+    elif ticker == 'NAIL':
+        idx = 0
+    else:
+        raise ValueError("Invalid ticker. Please specify a valid ticker.")
+
+    current_purchase_amount = round(float(present_balance['output1'][idx]['frcr_pchs_amt']), 2)  # 현재매입금액
+    average_purchase_price = round(float(present_balance['output1'][idx]['avg_unpr3']), 2)  # 평단가
 
     t = math.ceil(current_purchase_amount / purchase_amount * 10) / 10
     if 39 < t <= 40:
@@ -102,11 +109,11 @@ def calc_daily_value(api_values, invest_value):
 
     print('=' * 30)
     remain_deposit = round(invest_value['INIT_DEPOSIT'] - current_purchase_amount, 2)
-    current_quantity = float(present_balance['output1'][0]['ccld_qty_smtl1'])  # 현재 보유수량
+    current_quantity = float(present_balance['output1'][idx]['ccld_qty_smtl1'])  # 현재 보유수량
     print("[info] 현재 보유수량: ", current_quantity, '주')
     print("[info] 남은 예수금: ", remain_deposit)
     print("[info] 1일 매수 금액: ", purchase_amount)
-    print("[info] 현재 가격: ", present_balance['output1'][0]['ovrs_now_pric1'])
+    print("[info] 현재 가격: ", present_balance['output1'][idx]['ovrs_now_pric1'])
 
     print('=' * 30)
     print("[info] T: ", t, ' 회차')
@@ -117,7 +124,7 @@ def calc_daily_value(api_values, invest_value):
     print("[info] 별포인트 퍼센트: ", star_point_percent, '%')
     loc_buy_price = round(average_purchase_price*(1+star_point_percent/100), 2)
     print("[info] LOC 매수 가격: ", loc_buy_price)
-    top_buy_price = round(float(present_balance['output1'][0]['ovrs_now_pric1'])*(1.15), 2)
+    top_buy_price = round(float(present_balance['output1'][idx]['ovrs_now_pric1'])*(1.15), 2)
     print("[info] 큰수 매수 가격: ", top_buy_price)
     loc_sell_price = round(average_purchase_price*(1+(config.TRADE_COST/100)+(star_point_percent/100)), 2)
     print("[info] LOC 매도 가격: ", loc_sell_price)

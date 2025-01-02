@@ -63,7 +63,7 @@ def main():
         'average_purchase_price': 35,
         'remain_deposit': 3333,
     }
-    ib_params = dev_ib_params if env == 'DEV' else model.calc_daily_value(api_values, invest_values)
+    ib_params = dev_ib_params if env == 'DEV' else model.calc_daily_value(api_values, invest_values, ticker)
 
     info_send = {
         'is_buy': True,
