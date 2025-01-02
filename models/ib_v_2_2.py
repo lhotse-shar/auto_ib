@@ -10,17 +10,14 @@ import common.config as config
 def get_loc_buy_cnt(loc_buy_price, top_buy_price, progress_rate, purchase_amount, remain_deposit):
     loc_buy_cnt = 0
 
-    if loc_buy_price > top_buy_price:
-        print("[Warn] LOC 매수 안 합니다.")
-    else:
-        if progress_rate < 50:  # 전반전
-            loc_buy_cnt = math.floor(purchase_amount / 2 / loc_buy_price)
-        else:  # 후반전
+    if progress_rate < 50:  # 전반전
+        loc_buy_cnt = math.floor(purchase_amount / 2 / loc_buy_price)
+    else:  # 후반전
 
-            if remain_deposit < purchase_amount:
-                loc_buy_cnt = math.floor(remain_deposit / loc_buy_price)
-            else:
-                loc_buy_cnt = math.floor(purchase_amount / loc_buy_price)
+        if remain_deposit < purchase_amount:
+            loc_buy_cnt = math.floor(remain_deposit / loc_buy_price)
+        else:
+            loc_buy_cnt = math.floor(purchase_amount / loc_buy_price)
 
     # if loc_buy_cnt <= 0:
     #     raise ValueError("매수 개수가 0이거나 음수입니다.")
@@ -38,8 +35,6 @@ def get_top_buy_cnt(loc_buy_price, top_buy_price, avg_purchase_price, purchase_a
         print("[Warn] 큰수 매수 안합니다.")
         return top_buy_cnt
 
-    if loc_buy_price < top_buy_price:
-        print("[Warn] 큰수 매수 안 합니다.")
     else:
         if remain_deposit < purchase_amount:
             top_buy_cnt = math.floor(remain_deposit / top_buy_price)
@@ -122,12 +117,16 @@ def calc_daily_value(api_values, invest_value, ticker):
     print('=' * 30)
     star_point_percent = sell_threshold_percentage-t*sell_threshold_percentage/20*(40/num_buy_partitions)
     print("[info] 별포인트 퍼센트: ", star_point_percent, '%')
-    loc_buy_price = round(average_purchase_price*(1+star_point_percent/100), 2)
+    
+    loc_buy_price = round(average_purchase_price*(1+star_point_percent/100), 2)-0.01
     print("[info] LOC 매수 가격: ", loc_buy_price)
+    
     top_buy_price = round(float(present_balance['output1'][idx]['ovrs_now_pric1'])*(1.15), 2)
     print("[info] 큰수 매수 가격: ", top_buy_price)
+    
     loc_sell_price = round(average_purchase_price*(1+(config.TRADE_COST/100)+(star_point_percent/100)), 2)
     print("[info] LOC 매도 가격: ", loc_sell_price)
+    
     sell_threshold_price = round(average_purchase_price*(1+(config.TRADE_COST/100)+(sell_threshold_percentage/100)), 2)
     print("[info] 매도 기준 가격: ", sell_threshold_price)
 
